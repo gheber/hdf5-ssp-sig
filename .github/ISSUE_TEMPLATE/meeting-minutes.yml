@@ -1,0 +1,73 @@
+name: "SSP SIG Meeting Minutes"
+description: "Record structured minutes for an SSP SIG meeting"
+labels: ["meeting", "minutes"]
+body:
+  - type: input
+    id: date
+    attributes:
+      label: Meeting Date
+    validations:
+      required: true
+
+  - type: textarea
+    id: attendees
+    attributes:
+      label: Attendees
+      description: List all participants (GitHub handles preferred)
+    validations:
+      required: true
+
+  - type: textarea
+    id: agenda
+    attributes:
+      label: Agenda
+      placeholder: |
+        • Updates
+        • Open proposals
+        • Decisions needed
+        • New business
+    validations:
+      required: true
+
+  - type: textarea
+    id: discussion
+    attributes:
+      label: Discussion Notes
+      description: Capture major points raised during the meeting
+      placeholder: >
+        Summaries only; no private or sensitive content.
+
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Decisions Made
+      description: Record decisions, with consensus or vote outcome
+      placeholder: >
+        • Decision
+          - Context
+          - Responsible party
+          - Implementation timeline
+    validations:
+      required: true
+
+  - type: textarea
+    id: action-items
+    attributes:
+      label: Action Items
+      description: Who owns what, and by when?
+      placeholder: >
+        • Action
+          - Owner
+          - Due date
+
+  - type: textarea
+    id: parking-lot
+    attributes:
+      label: Parking Lot
+      description: Items not resolved in this meeting
+
+  - type: textarea
+    id: next-meeting
+    attributes:
+      label: Next Meeting
+      description: Date, time, and preliminary agenda

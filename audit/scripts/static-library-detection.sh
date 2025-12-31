@@ -31,7 +31,8 @@ detect_static_libs() {
     # Common library detection patterns
     declare -A lib_patterns
     lib_patterns[hdf5]="H5|HDF5"
-    lib_patterns[h5tools]="h5tools"
+    lib_patterns[hdf5_hl]="H5DO|H5DS|H5LT|H5PT|H5TB"
+    lib_patterns[hdf5_tools]="h5tools"
     lib_patterns[libaec]="aec_"
     lib_patterns[zlib]="inflate|deflate|gzip|compress"
     # Extract symbols

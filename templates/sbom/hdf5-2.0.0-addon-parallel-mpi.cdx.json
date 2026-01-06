@@ -1,0 +1,82 @@
+{
+    "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:__UUID_PARALLEL_MPI_ADDON_BOM__",
+    "version": 1,
+    "metadata": {
+        "timestamp": "__BOM_TIMESTAMP_RFC3339__",
+        "manufacturer": {
+            "name": "The HDF Group"
+        },
+        "component": {
+            "bom-ref": "hdf5:addon:parallel-mpi@2.0.0",
+            "type": "library",
+            "group": "org.hdfgroup",
+            "name": "hdf5-addon-parallel-mpi",
+            "version": "2.0.0",
+            "description": "HDF5 MPI parallelism add-on (only import if MPI parallelism is enabled/shipped)",
+            "externalReferences": [
+                {
+                    "type": "bom",
+                    "url": "urn:cdx:__UUID_CORE_BOM_UUID_PART__/__CORE_BOM_VERSION__#hdf5:core@2.0.0",
+                    "comment": "Requires hdf5-2.0.0-core.cdx.json"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.hdf5.sbom.profile",
+                    "value": "addon-zlib"
+                },
+                {
+                    "name": "org.hdfgroup.hdf5.build.flags",
+                    "value": "__INJECT_PARALLEL_RELEVANT_FLAGS__"
+                }
+            ]
+        }
+    },
+    "components": [
+        {
+            "bom-ref": "hdf5:core@2.0.0",
+            "type": "library",
+            "group": "org.hdfgroup",
+            "name": "hdf5",
+            "version": "2.0.0",
+            "scope": "required",
+            "purl": "pkg:generic/hdf5@2.0.0"
+        },
+        {
+            "type": "library",
+            "name": "${MPI_IMPLEMENTATION_NAME}",
+            "version": "${MPI_VERSION}",
+            "bom-ref": "pkg:generic/${MPI_IMPLEMENTATION_PURL_NAME}@${MPI_VERSION}",
+            "purl": "pkg:generic/${MPI_IMPLEMENTATION_PURL_NAME}@${MPI_VERSION}",
+            "scope": "optional",
+            "properties": [
+                {
+                    "name": "hdf5:feature",
+                    "value": "parallel-hdf5"
+                },
+                {
+                    "name": "hdf5:enabledWhen",
+                    "value": "HDF5_ENABLE_PARALLEL=ON"
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "${MPI_SHA256}"
+                }
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "hdf5:addon:parallel-mpi@2.0.0",
+            "dependsOn": [
+                "hdf5:core@2.0.0",
+                "pkg:generic/${MPI_IMPLEMENTATION_PURL_NAME}@${MPI_VERSION}"
+            ]
+        }
+    ]
+}

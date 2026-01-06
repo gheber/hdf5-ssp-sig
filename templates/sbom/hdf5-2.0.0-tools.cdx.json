@@ -1,0 +1,336 @@
+{
+    "$schema": "https://cyclonedx.org/schema/bom-1.6.schema.json",
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:{{UUID_V4}}",
+    "version": 1,
+    "metadata": {
+        "timestamp": "{{BOM_TIMESTAMP_ISO8601_UTC}}",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "{{SBOM_GENERATOR_NAME}}",
+                    "version": "{{SBOM_GENERATOR_VERSION}}"
+                }
+            ]
+        },
+        "component": {
+            "bom-ref": "pkg:generic/hdf5-tools@2.0.0",
+            "type": "application",
+            "name": "hdf5-tools",
+            "version": "2.0.0",
+            "supplier": {
+                "name": "The HDF Group"
+            },
+            "publisher": "The HDF Group",
+            "purl": "pkg:generic/hdf5-tools@2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "release-notes",
+                    "url": "https://www.hdfgroup.org/2025/11/10/release-of-hdf5-2-0-0-newsletter-207/"
+                },
+                {
+                    "type": "distribution",
+                    "url": "https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/index.html"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.hdfgroup.org/solutions/hdf5/"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.sbom:fragment",
+                    "value": "tools"
+                },
+                {
+                    "name": "org.hdfgroup.build:HDF5_BUILD_TOOLS",
+                    "value": "{{ON|OFF}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:HDF5_BUILD_HL_TOOLS",
+                    "value": "{{ON|OFF}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:CMAKE_BUILD_TYPE",
+                    "value": "{{Release|RelWithDebInfo|Debug|MinSizeRel}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:CMAKE_C_COMPILER_ID",
+                    "value": "{{GNU|Clang|AppleClang|MSVC|Intel|...}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:CMAKE_C_COMPILER_VERSION",
+                    "value": "{{COMPILER_VERSION}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:CFLAGS",
+                    "value": "{{CFLAGS}}"
+                },
+                {
+                    "name": "org.hdfgroup.build:LDFLAGS",
+                    "value": "{{LDFLAGS}}"
+                },
+                {
+                    "name": "org.hdfgroup.install:prefix",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}"
+                },
+                {
+                    "name": "org.hdfgroup.install:bindir",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin"
+                }
+            ]
+        }
+    },
+    "components": [
+        {
+            "bom-ref": "pkg:generic/hdf5-core@2.0.0",
+            "type": "library",
+            "name": "hdf5-core",
+            "version": "2.0.0",
+            "supplier": {
+                "name": "The HDF Group"
+            },
+            "purl": "pkg:generic/hdf5-core@2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "bom",
+                    "url": "{{BASE_BOM_URL}}/hdf5-2.0.0-core.cdx.json"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5dump",
+            "type": "application",
+            "name": "h5dump",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5DUMP}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5dump"
+                },
+                {
+                    "name": "org.hdfgroup.build:featureFlags",
+                    "value": "{{FEATURE_FLAG_STRING_FOR_THIS_BINARY}}"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5stat",
+            "type": "application",
+            "name": "h5stat",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5STAT}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5stat"
+                },
+                {
+                    "name": "org.hdfgroup.build:featureFlags",
+                    "value": "{{FEATURE_FLAG_STRING_FOR_THIS_BINARY}}"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5ls",
+            "type": "application",
+            "name": "h5ls",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5LS}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5ls"
+                },
+                {
+                    "name": "org.hdfgroup.build:featureFlags",
+                    "value": "{{FEATURE_FLAG_STRING_FOR_THIS_BINARY}}"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5diff",
+            "type": "application",
+            "name": "h5diff",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5DIFF}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5diff"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5copy",
+            "type": "application",
+            "name": "h5copy",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5COPY}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5copy"
+                }
+            ]
+        },
+        {
+            "bom-ref": "hdf5-tools@2.0.0:bin/h5repack",
+            "type": "application",
+            "name": "h5repack",
+            "version": "2.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "HDF5"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-256",
+                    "content": "{{SHA256_H5REPACK}}"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "org.hdfgroup.install:path",
+                    "value": "{{CMAKE_INSTALL_PREFIX}}/bin/h5repack"
+                }
+            ]
+        }
+        /* Add additional tools you ship (e.g., h5import, h5jam, h5unjam, h5mkgrp, h5repart, ...)
+       IMPORTANT for 2.0.0: do NOT add h52gif / gif2h5 (removed). */
+    ],
+    "dependencies": [
+        {
+            "ref": "pkg:generic/hdf5-tools@2.0.0",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0",
+                "hdf5-tools@2.0.0:bin/h5dump",
+                "hdf5-tools@2.0.0:bin/h5stat",
+                "hdf5-tools@2.0.0:bin/h5ls",
+                "hdf5-tools@2.0.0:bin/h5diff",
+                "hdf5-tools@2.0.0:bin/h5copy",
+                "hdf5-tools@2.0.0:bin/h5repack"
+            ]
+        },
+        {
+            "ref": "pkg:generic/hdf5-core@2.0.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5dump",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5stat",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5ls",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5diff",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5copy",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        },
+        {
+            "ref": "hdf5-tools@2.0.0:bin/h5repack",
+            "dependsOn": [
+                "pkg:generic/hdf5-core@2.0.0"
+            ]
+        }
+    ]
+}

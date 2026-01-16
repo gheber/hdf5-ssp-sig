@@ -16,6 +16,8 @@ S2‑D2 and SC25 materials emphasize digitally signed plugins and exploring sign
 
 ## OSPS crosswalk
 
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
+
 ### Status legend
 
 * **covered:** the SHINES control is intended to satisfy that OSPS requirement.

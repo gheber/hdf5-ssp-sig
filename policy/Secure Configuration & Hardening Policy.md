@@ -17,6 +17,8 @@ HDF5 plugin loading behavior can be controlled via APIs and environment variable
 
 ## OSPS crosswalk
 
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
+
 ### Status legend
 
 * **covered:** the SHINES control is intended to satisfy that OSPS requirement.

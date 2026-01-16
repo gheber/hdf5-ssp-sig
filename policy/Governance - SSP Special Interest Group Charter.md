@@ -50,6 +50,8 @@ HDF5 also uses public channels (forum/discussions) for community engagement, whi
 
 ## OSPS crosswalk
 
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
+
 ### Status legend
 
 * **covered:** the SHINES control is intended to satisfy that OSPS requirement.

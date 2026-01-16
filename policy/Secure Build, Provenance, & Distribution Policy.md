@@ -17,6 +17,8 @@ Safe‑OSE explicitly calls for SBOMs and increased adoption of signed, reproduc
 
 ## OSPS crosswalk
 
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
+
 ### Status legend
 
 * **covered:** the SHINES control is intended to satisfy that OSPS requirement.

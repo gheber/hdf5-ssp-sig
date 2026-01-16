@@ -1,6 +1,6 @@
 # OSPS → SHINES Coverage Matrix
 
-See [Open Source Project Security Baseline](https://baseline.openssf.org/versions/devel).
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
 
 ## Legend
 

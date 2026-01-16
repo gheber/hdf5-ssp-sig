@@ -17,6 +17,8 @@ The Safe‑OSE proposal specifically calls out current plugin manager weaknesses
 
 ## OSPS crosswalk
 
+See [Open Source Project Security (OSPS) Baseline](https://baseline.openssf.org/versions/devel).
+
 ### Status legend
 
 * **covered:** the SHINES control is intended to satisfy that OSPS requirement.

@@ -15,12 +15,12 @@
 ## 1) Identify the exact artifacts (URLs + sizes + timestamps)
 
 - [?] Support tarball (HDF Group downloads):
-  - URL: https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz
+  - URL: [support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz](https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz)
   - Filename: hdf5-2.0.0.tar.gz
   - Size: 42016043
   - Published checksum/signature files (if any): `<URLS>`
 - [?] GitHub archive:
-  - URL: https://github.com/HDFGroup/hdf5/releases/download/2.0.0/hdf5-2.0.0.tar.gz
+  - URL: [github.com/HDFGroup/hdf5/releases/download/2.0.0/hdf5-2.0.0.tar.gz](https://github.com/HDFGroup/hdf5/releases/download/2.0.0/hdf5-2.0.0.tar.gz)
   - Filename: hdf5-2.0.0.tar.gz
   - Size: 42014805
 
@@ -117,7 +117,7 @@ rm -rf repack && mkdir -p repack/{support,github}
 # Normalize mtimes (choose a reference timestamp, e.g. tag commit time: git show -s --format=%ct a6ff8ae)
 REF_EPOCH=1762819001
 
-for d in support github fossies; do
+for d in github support; do
   rsync -a --delete work/$d/ repack/$d/
   find repack/$d -exec touch -h -d "@${REF_EPOCH}" {} +
 

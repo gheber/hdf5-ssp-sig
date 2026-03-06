@@ -1,6 +1,6 @@
 # HDF5 Security Threat (Attack) Model
 
-This document defines a *security* threat model for the HDF5 ecosystem using the **CASSE** approach (“Core library, Application, Storage, System, External libraries”). CASSE was introduced specifically for data management libraries (DMLs).
+This document defines a *security* threat model for the HDF5 ecosystem using the **CASSE** approach (“Core library, Application, Storage, System, External libraries”). CASSE was introduced specifically for data management libraries (DML).
 
 **Reference:** [https://dl.acm.org/doi/full/10.1145/3731599.3767556](https://dl.acm.org/doi/full/10.1145/3731599.3767556)
 
@@ -8,9 +8,9 @@ This document defines a *security* threat model for the HDF5 ecosystem using the
 
 - [1) Scope and security goals](#1-scope-and-security-goals)
 - [2) CASSE in one page](#2-casse-in-one-page)
-- [3) Threat enumeration workflow (CASSE)](#3-threat-enumeration-workflow-casse)
-- [4) Practical examples (CASSE style)](#4-practical-examples-casse-style)
-- [5) Attack register template (copy/paste)](#5-attack-register-template-copypaste)
+- [3) Threat enumeration workflow](#3-threat-enumeration-workflow)
+- [4) Practical examples](#4-practical-examples)
+- [5) Attack register template](#5-attack-register-template)
 - [6) Threat taxonomy aligned with HDF5 SSP SIG vulnerability categories](#6-threat-taxonomy-aligned-with-hdf5-ssp-sig-vulnerability-categories)
 - [7) Checklist for reviewers](#7-checklist-for-reviewers)
 
@@ -160,7 +160,7 @@ flowchart TB
     class M0,M0x,M1,M1x,M2,M3 msg;
 ```
 
-## 3) Threat enumeration workflow (CASSE)
+## 3) Threat enumeration workflow
 
 ### Step 0 — Set boundaries and assumptions
 
@@ -214,7 +214,7 @@ Threat modeling is only “done” when you create:
 - regression tests (fuzz seeds, negative tests, signature checks)
 - operational guidance (hardening options, safe configs)
 
-## 4) Practical examples (CASSE style)
+## 4) Practical examples
 
 ### Example 1 — Data • Poisoning • Core library (FMT/LIB)
 
@@ -277,7 +277,7 @@ Threat modeling is only “done” when you create:
 - SBOMs + dependency pinning
 - constrained execution environments for high-risk contexts
 
-## 5) Attack register template (copy/paste)
+## 5) Attack register template
 
 ```markdown
 ## ATK-###: <short name>
@@ -328,6 +328,4 @@ Use this table to tag each threat (many threats span multiple categories):
 - [ ] ensure artifacts are signed and verifiable
 - [ ] publish SBOMs
 - [ ] ensure CI produces reproducible outputs where feasible
-
-
-[def]: #5-artifacts-to-keep-in-the-repository
+  

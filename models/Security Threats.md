@@ -10,9 +10,9 @@ This document defines a *security* threat model for the HDF5 ecosystem using the
 - [2) CASSE in one page](#2-casse-in-one-page)
 - [3) Threat enumeration workflow (CASSE)](#3-threat-enumeration-workflow-casse)
 - [4) Practical examples (CASSE style)](#4-practical-examples-casse-style)
-- [5) Artifacts to keep in the repository](#5-artifacts-to-keep-in-the-repository)
+- [5) Attack register template (copy/paste)](#5-attack-register-template-copypaste)
 - [6) Threat taxonomy aligned with HDF5 SSP SIG vulnerability categories](#6-threat-taxonomy-aligned-with-hdf5-ssp-sig-vulnerability-categories)
-- [7) Guidance for reviewers](#7-guidance-for-reviewers)
+- [7) Checklist for reviewers](#7-checklist-for-reviewers)
 
 ## 1) Scope and security goals
 
@@ -42,23 +42,122 @@ CASSE classifies attacks by combining:
 
 So an attack label looks like: **Data • Poisoning • Core library**.
 
-### 2.1 CASSE modeling artifacts (required)
+CASSE is most effective when we maintain three complementary models.
 
-CASSE is most effective when you maintain three complementary models:
+### Data-flow diagram (DFD)
 
-1. **Data-flow diagram (DFD)**: layers/trust boundaries data passes through
-2. **Abstract data model**: how HDF5 objects relate (groups, datasets, attributes, datatypes, etc.)
-3. **Concrete/on-disk model** (where relevant): key on-disk structures and pointers/offsets that parsers traverse
-
-Example starter DFD for HDF5-based apps:
+A DFD shows the layers/trust boundaries data passes through. For HDF5, this includes external data sources, the application, the core library, extensions (filters/VOL/VFD), and storage backends.
 
 ```mermaid
 flowchart LR
-  U[External Data Source] -->|HDF5 file/object| App[Application]
-  App -->|HDF5 API| Core[Core HDF5 Library]
-  Core --> Ext["Extensions(VOL/VFD/Filters)"]
-  Ext --> Sto["Storage(FS / Object store / HPC FS)"]
-  Sto --> Core
+  subgraph H["HDF5"]
+    direction TB
+    H_app["Application"]
+    H_ext["External Interface"]
+    H_api["HDF5 Public API"]
+    H_vol["VOL Connector"]
+    H_core["Core HDF5 Library"]
+    H_vfd["VFD"]
+    H_storage["Storage"]
+
+    %% Raw data path
+    H_app --> H_api
+
+    %% SDDL object path
+    H_app --> H_ext
+    H_ext --> H_api
+    H_api --> H_vol
+    H_vol --> H_core
+    H_core --> H_vfd
+
+    %% File path
+    H_vol --> H_storage
+    H_vfd --> H_storage
+  end
+
+  subgraph L["Legend"]
+    direction TB
+    lr0(( )) --> lr1["Raw Data"]
+    ls0(( )) --> ls1["SDDL Objects"]
+    lf0(( )) --> lf1["Files"]
+  end
+
+  style lr0 fill:none,stroke:none
+  style ls0 fill:none,stroke:none
+  style lf0 fill:none,stroke:none
+
+  %% Links:
+  %% 0 app->api
+  %% 1 app->ext, 2 ext->api, 3 api->vol, 4 vol->core, 5 core->vfd
+  %% 6 vol->storage, 7 vfd->storage
+  %% 8 raw legend, 9 sddl legend, 10 files legend
+
+  %% Raw Data (dotted)
+  linkStyle 0,8 stroke-dasharray: 2 2,stroke-width:2px
+
+  %% SDDL Objects (dash-dot)
+  linkStyle 1,2,3,4,5,9 stroke-dasharray: 8 3 2 3,stroke-width:2px
+
+  %% Files (thick dashed)
+  linkStyle 6,7,10 stroke-dasharray: 10 4,stroke-width:3px
+```
+
+### Abstract data model
+
+This model captures how HDF5 objects relate (groups, datasets, attributes, datatypes, etc.) and where critical pointers/offsets/sizes are that attackers might target.
+
+```mermaid
+flowchart TB
+    root["Root Group (/)"]
+
+    root -->|+| sub["Sub Group"]
+    root -->|+| cdt["Committed<br/>Datatype"]
+    root -->|+| dset["Dataset"]
+    root -->|+| rattr["Attribute"]
+
+    rattr --> rtype["Datatype"]
+    rattr --> rspace["Dataspace"]
+    rattr --> rdata["Data"]
+
+    sub -->|+| subAttr["Attribute"]
+    sub --> more["..."]
+
+    cdt -->|+| cdtAttr["Attribute"]
+
+    dset -->|+| dsAttr["Attribute"]
+    dset --> dsSpace["Dataspace"]
+    dset --> dsType["Datatype"]
+    dset --> dsData["Data"]
+
+    classDef dashed stroke-dasharray: 5 5,fill:#fff,stroke:#333,color:#111;
+    class rtype,rspace,subAttr,cdtAttr,dsAttr,dsSpace,dsType dashed;
+```
+
+### Concrete/on-disk model
+
+This model captures key on-disk structures and pointers/offsets that parsers traverse. For HDF5, this includes the superblock, object headers, B-trees, message lists, references, external links, etc.
+
+```mermaid
+flowchart TB
+    SB["Superblock"] --> OH0["Object Header<br/>(Root Group)"]
+
+    OH0 --> M0["Message<br/>(B-Tree)"]
+    OH0 -->|+| M0x["Message"]
+    M0 --> BT["B-Tree"]
+
+    BT --> OH1["Object Header<br/>(Dataset)"]
+    BT -->|+| OH2["Object Header<br/>(Com. Datatype)"]
+    BT -->|+| OH3["Object Header<br/>(Subgroup)"]
+
+    OH1 --> M1["Message<br/>(Layout)"]
+    OH1 -->|+| M1x["Message"]
+    M1 --> D["Data"]
+
+    OH2 --> M2["Message"]
+    OH3 --> M3["Message"]
+
+    classDef msg stroke-dasharray: 5 5,fill:#fff,stroke:#333,color:#111;
+    class M0,M0x,M1,M1x,M2,M3 msg;
 ```
 
 ## 3) Threat enumeration workflow (CASSE)
@@ -178,23 +277,7 @@ Threat modeling is only “done” when you create:
 - SBOMs + dependency pinning
 - constrained execution environments for high-risk contexts
 
-## 5) Artifacts to keep in the repository
-
-Suggested layout:
-
-```text
-models/
-  Security Threats.md
-  Security/
-    dfd.mmd
-    data-model-abstract.mmd
-    data-model-ondisk.mmd
-    attack-register.md
-    mitigations-backlog.md
-    test-plan.md
-```
-
-### 5.1 Attack register template (copy/paste)
+## 5) Attack register template (copy/paste)
 
 ```markdown
 ## ATK-###: <short name>
@@ -226,22 +309,25 @@ Use this table to tag each threat (many threats span multiple categories):
 | **SCD** (Supply chain/dist.) | unsigned artifacts, typosquatting, compromised repos, provenance gaps | System, Application |
 | **UNK** (Unknown) | novel vulnerability classes, cross-layer chains | Any |
 
-## 7) Guidance for reviewers
+## 7) Checklist for reviewers
 
 ### When a change touches parsing or on-disk structures
 
-- require negative tests for invalid sizes/offsets
-- add fuzz seeds for new messages/layouts
-- add explicit resource limits (time/memory)
+- [ ] require negative tests for invalid sizes/offsets
+- [ ] add fuzz seeds for new messages/layouts
+- [ ] add explicit resource limits (time/memory)
 
 ### When a change touches plugin loading
 
-- document trust assumptions
-- provide a safe default (deny/allowlist) for high-risk contexts
-- add tests for path hijack and “fail closed” behavior
+- [ ] document trust assumptions
+- [ ] provide a safe default (deny/allow list) for high-risk contexts
+- [ ] add tests for path hijack and “fail closed” behavior
 
 ### When a change touches distribution
 
-- ensure artifacts are signed and verifiable
-- publish SBOMs
-- ensure CI produces reproducible outputs where feasible
+- [ ] ensure artifacts are signed and verifiable
+- [ ] publish SBOMs
+- [ ] ensure CI produces reproducible outputs where feasible
+
+
+[def]: #5-artifacts-to-keep-in-the-repository

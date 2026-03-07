@@ -6,24 +6,52 @@ Risk bands: **1-5 Low, 6-10 Moderate, 11-15 High, 16-20 Very High, 21-25 Critica
 
 ## Hazard Register
 
-### 1. Crash / power loss / SIGKILL during write
+## HAZ-001: Crash / power loss / SIGKILL / intermittent failure during write
 
-Type: `Hazard`
+- **Subsystem / component:** metadata cache, chunk cache, filter/dtype conversion pipeline, file space management, VFD
+- **SSP category tags:** FMT, LIB, OPS
+- **Hazard family:** H1, H2
+- **Preconditions:** unpersisted meta- or raw data
+- **Trigger:** Crash (application, OS), `SIGKILL`, power loss, hardware failure
+- **Unsafe state:**
+  - on-disk metadata is internally inconsistent
+  - on-disk raw data is partially written or corrupted
+  - in-memory state diverges from disk without a safe replay or repair path
+  - in-memory state is lost or corrupted
+- **Accident chain:** corruption → file integrity failure → data loss, downtime, or silent data drift
+- **Loss / impact:**
+  - Inconsistent metadata
+  - File may not open
+  - unrelated datasets can become inaccessible
+  - Recovery is “very hard.”
+- **Severity:** 5
+- **Likelihood:** 4
+- **Risk:** 20 (High)
+- **Detectability:** checksums, integrity validation, monitoring for crashes and restarts
+- **Unsafe control actions:**
+  - not provided
+  - provided when unsafe
+  - wrong timing/order
+  - too long/too short
+- **Safety constraints:**
+  - SC-1: Checksums and integrity validation must detect corruption from failed writes.
+  - SC-2: HDF5 must not lose or corrupt previously written data on a failed write.
+  - SC-3: HDF5 must not lose or corrupt in-memory state on a failed write.
+- **Mitigations:**
+  - **Prevention:** WAL, journaling, transactional design, integrity validation, durability boundaries, operational durability strategy (close/reopen, snapshot/copy, generation switch), preflight capacity checks, free-space headroom, monitoring for ENOSPC and treating as failed file.
+  - **Detection:** integrity validation, monitoring for crashes and restarts
+  - **Recovery / containment:** keep last-good generation, provide repair tools, automate integrity validation in pipelines
+- **Tests / evidence:**
+  - **Crash injection:** simulate crashes at various points during writes and verify file integrity and recovery.
+  - **Malformed-input or fuzz coverage:** test with malformed inputs that could trigger edge cases in the write path.
+  - **Concurrency coverage:** test with concurrent writes and reads to verify that safety constraints hold.
+  - **Runtime validation / telemetry:** monitor for crashes, restarts, and integrity check failures in production.
+- **Owner / status / milestone:**
+  - **Owner:** HDF5 team
+  - **Status:** Open
+  - **Milestone:** TBD
+- **Links:** [HDF5 Registry Asset Register](./asset-register.md)
 
-What can go wrong:
-Inconsistent metadata; file may not open; unrelated datasets can become inaccessible; recovery is “very hard.”
-
-Severity: `5`
-
-Likelihood: `4`
-
-Risk: **20 (High)**
-
-Top controls (do first):
-
-- Architect for crash tolerance: write to a new file and atomic rename on “commit”; keep last-good generation.
-- Checkpoint via close at safe points (time- or size-based rollover).
-- Use SWMR only where it fits and follow its model (see below).
 
 ### 2. Dirty metadata window
 

@@ -2,6 +2,8 @@
 
 This document defines a practical hazard model for the HDF5 library and file format. It is meant to expose accident chains, turn them into concrete constraints and tests, and keep safety work aligned with the HDF5 SSP SIG vulnerability taxonomy used across the repository.
 
+**Reference:** [Review of Systems-Theoretic Process Analysis (STPA) Method and Results to Support NextGen Concept Assessment and Validation](https://www.ll.mit.edu/sites/default/files/publication/doc/2018-12/Harkleroad_2013_ATC-427.pdf)
+
 ## Contents
 
 - [1) Scope and safety goals](#1-scope-and-safety-goals)

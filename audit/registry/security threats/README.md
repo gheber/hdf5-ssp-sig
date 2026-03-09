@@ -14,3 +14,6 @@ This folder contains the detailed security threat records for the HDF5 registry.
 | `ATK-008` | Stack-based overflows in decode and traversal logic crash the parser | `15 (High)` |
 | `ATK-009` | Malformed files can exhaust memory or CPU and deny service | `16 (Very High)` |
 | `ATK-010` | Malformed metadata can trigger null or uninitialized pointer dereference | `12 (High)` |
+| `ATK-011` | Malicious plugin resolution executes untrusted filter, VOL, or VFD code | `20 (Very High)` |
+| `ATK-012` | Pathological chunk layouts amplify I/O and overload storage backends | `16 (Very High)` |
+| `ATK-013` | Trojanized HDF5 packages or binaries compromise the host system | `15 (High)` |

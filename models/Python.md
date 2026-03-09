@@ -6,7 +6,7 @@ It builds on the core models in [Safety Hazard.md](./Safety%20Hazard.md), [Secur
 
 ## Contents
 
-- [1) Scope and security goals](#1-scope-and-security-goals)
+- [1) Scope and SSP goals](#1-scope-and-ssp-goals)
 - [2) HDF5 Python Wrapper (H5PW) model in one page](#2-hdf5-python-wrapper-h5pw-model-in-one-page)
 - [3) Threat enumeration workflow](#3-threat-enumeration-workflow)
 - [4) Practical examples](#4-practical-examples)
